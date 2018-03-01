@@ -1,4 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { saveData } from '../actions';
+
+const mapDispatchToProps = {
+  saveData,
+};
 
 class Form extends Component {
   state = {
@@ -13,7 +19,7 @@ class Form extends Component {
   };
 
   saveData = () => {
-    console.log(this.state);
+    this.props.saveData(this.state);
   };
 
   render() {
@@ -45,4 +51,7 @@ class Form extends Component {
   }
 }
 
-export default Form;
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Form);

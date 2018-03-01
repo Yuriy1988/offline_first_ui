@@ -1,11 +1,13 @@
-const initialState = {};
+const initialState = {
+  data: []
+};
 
 const dataReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'GET_DATA':
+    case 'SAVE_DATA':
       return {
         ...state,
-        data: action.payload,
+        data: state.data.concat(action.payload),
       };
 
     default:

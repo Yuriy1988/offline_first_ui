@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-const MapStateToProps = (state) => ({
-  data: state,
-});
+import Data from './features/Data/Data';
+import Form from './features/Form/Form';
 
 class App extends Component {
   render() {
-    console.log(this.props);
     return (
       <div>
-        Hi
+        <Form />
+        <Data />
       </div>
     );
   }
 }
 
-export default connect(MapStateToProps)(App);
+export default App;
