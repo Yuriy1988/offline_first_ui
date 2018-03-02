@@ -13,7 +13,7 @@ class HeroInsert extends Component {
     try {
       const { data } = await axios
         .post('http://localhost:3001/data',
-          { key, value }
+          { key, value, isSynced: true }
         );
     } catch (error) {
       this.insertToDb();
@@ -23,7 +23,7 @@ class HeroInsert extends Component {
   insertToDb = async () => {
     const { key, value } = this.state;
     const db = await Database.get();
-    db.formdata.insert({ key, value });
+    db.formdata.insert({ key, value, id: Math.random(), isSynced: false });
     this.setState({ key: '', value: '' });
   };
 
@@ -64,7 +64,7 @@ class HeroInsert extends Component {
           type='text'
           value={this.state.value}
         />
-        <button onClick={this.insertToServer}>Save data</button>
+        <button onClick={this.insertToDb}>Save data</button>
       </div>
     );
   }

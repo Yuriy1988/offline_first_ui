@@ -1,8 +1,14 @@
+import { loadFromDb } from './utils/dataBaseSync';
+
 export const fetchData = () => {
   return (dispatch, state, api) => {
     return api('', 'get')
       .then(({ data }) => dispatch(receiveData(data)))
-      .catch(console.log);
+      .catch(() => {
+        loadFromDb().then((data) => {
+          return dispatch(receiveData(data));
+        });
+      });
   };
 };
 

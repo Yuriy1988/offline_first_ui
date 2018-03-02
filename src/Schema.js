@@ -8,8 +8,8 @@ const formDataSchema = {
       'type': 'string',
       'primary': true,
     },
-    synced: {
-      'type': 'bool',
+    isSynced: {
+      'type': 'boolean',
     },
     key: {
       'type': 'string',
