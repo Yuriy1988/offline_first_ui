@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import Data from './features/Data/Data';
-import Form from './features/Form/Form';
+import DataList from './dataList/dataList';
+import CreateData from './createData/createData';
 
 class App extends Component {
   render() {
     return (
       <div>
-        <Form />
-        <Data />
+        <CreateData />
+        <DataList />
       </div>
     );
   }
