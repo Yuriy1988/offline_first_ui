@@ -1,1 +1,1 @@
-export const dbName = 'formdata';
+export const collectionName = 'somename';

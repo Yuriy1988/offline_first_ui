@@ -7,7 +7,6 @@ import App from './App';
 const store = configureStore();
 const mountApp = document.getElementById('root');
 
-
 render(
   <Provider store={store}>
     <App />

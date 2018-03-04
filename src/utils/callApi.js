@@ -1,16 +1,10 @@
 import axios from 'axios';
-export const API_URL = 'http://localhost:3001/data';
+const API_URL = 'http://localhost:3001';
 
-export default function callApi(endpoint, method = 'get', body, options = { isJSON: true }) {
-  const headers = {};
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.put['Content-Type'] = 'application/json';
+axios.defaults.headers.patch['Content-Type'] = 'application/json';
 
-  if (options.isJSON) {
-    headers['content-type'] = 'application/json';
-  }
-
-  return axios(`${API_URL}/${endpoint}`, {
-    headers,
-    method,
-    body: options.isJSON || method !== 'get' ? JSON.stringify(body) : body,
-  });
+export default function callApi(endpoint, method = 'get', body) {
+  return axios[method](`${API_URL}/${endpoint}`, body );
 }

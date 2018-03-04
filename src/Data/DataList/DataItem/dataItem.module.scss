@@ -1,0 +1,20 @@
+.item {
+  display: flex;
+  width: 200px;
+  border: 1px solid green;
+  align-items: center;
+  justify-content: space-around;
+  padding: 5px;
+  margin: 5px;
+
+  .status {
+    color: green;
+  }
+
+  &.offline {
+    border: 1px solid red;
+    .status {
+      color: red;
+    }
+  }
+}
