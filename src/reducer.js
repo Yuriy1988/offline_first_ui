@@ -2,6 +2,7 @@ import omit from 'object.omit';
 const initialState = {
   data: [],
   serverHealth: '',
+  serverAvailable: true,
 };
 
 export default function reducer(state = initialState, action) {
@@ -11,6 +12,13 @@ export default function reducer(state = initialState, action) {
         ...state,
         data: action.payload
           .reduce((acc, item) => ({ ...acc, [item.id]: item }), {}),
+      };
+    }
+
+    case 'TOGGLE_SERVER': {
+      return {
+        ...state,
+        serverAvailable: !state.serverAvailable,
       };
     }
 

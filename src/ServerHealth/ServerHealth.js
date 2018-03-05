@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
 import styles from './serverHelath.module.scss';
-import { checkHealth, serverSync } from '../actions';
+import { checkHealth, serverSync, toggleServer } from '../actions';
 
 class ServerStatus extends Component {
   componentDidMount() {
@@ -11,6 +11,11 @@ class ServerStatus extends Component {
 
   tryToSync = () => {
     this.props.serverSync();
+    this.props.checkHealth();
+  };
+
+  toggleServer = () => {
+    this.props.toggleServer();
     this.props.checkHealth();
   };
 
@@ -26,6 +31,7 @@ class ServerStatus extends Component {
         Server status: <b className={className}>{serverHealth}</b>
         <div>
           <button onClick={this.tryToSync}>Try to sync with server</button>
+          <button onClick={this.toggleServer}>toggleServer availability</button>
         </div>
       </div>
     );
@@ -34,5 +40,5 @@ class ServerStatus extends Component {
 
 export default connect(
   (state) => ({ serverHealth: state.data.serverHealth }),
-  { checkHealth, serverSync }
+  { checkHealth, serverSync, toggleServer }
 )(ServerStatus);

@@ -10,11 +10,14 @@ import uuidv4 from 'uuid/v4';
 
 export const fetchData = () => {
   return async (dispatch, state, api) => {
+    const { serverAvailable } = state().data;
+    const apiUrl = serverAvailable ? 'data' : 'fake';
+
     const dbData = await getDbData();
     const filtered = dbData.filter(item => !item.markedForDeletion);
 
     try {
-      const response = await api('data');
+      const response = await api(apiUrl);
       dispatch(receiveDataList([...filtered, ...response.data]));
     } catch(e) {
       dispatch(receiveDataList(filtered));
@@ -24,8 +27,11 @@ export const fetchData = () => {
 
 export const updateData = (data) => {
   return async (dispatch, state, api) => {
+    const { serverAvailable } = state().data;
+    const apiUrl = serverAvailable ? 'data' : 'fake';
+
     try {
-      const response = await api('data', 'post', data);
+      const response = await api(apiUrl, 'post', data);
       await saveToDb(data);
       dispatch(updatedData(response.data));
     } catch (e) {
@@ -37,6 +43,9 @@ export const updateData = (data) => {
 
 export const serverSync = () => {
   return async (dispatch, state, api) => {
+    const { serverAvailable } = state().data;
+    const apiUrl = serverAvailable ? 'data' : 'fake';
+
     try {
       const unsyncedData = await getDbData();
 
@@ -50,7 +59,7 @@ export const serverSync = () => {
         }
       });
 
-      const response = await api('data');
+      const response = await api(apiUrl);
       await merge(response.data);
       dispatch(receiveDataList(response.data));
     } catch(e) {
@@ -61,8 +70,10 @@ export const serverSync = () => {
 
 export const deleteItem = (id) => {
   return async (dispatch, state, api) => {
+    const { serverAvailable } = state().data;
+    const apiUrl = serverAvailable ? 'data' : 'fake';
     try {
-      await api(`data/${id}`, 'delete', id);
+      await api(`${apiUrl}/${id}`, 'delete', id);
       await deleteItemFromDb(id);
       dispatch(deletedItem(id));
     } catch(e) {
@@ -74,8 +85,11 @@ export const deleteItem = (id) => {
 
 export const checkHealth = () => {
   return async (dispatch, state, api) => {
+    const { serverAvailable } = state().data;
+    const apiUrl = serverAvailable ? '' : 'fake';
+
     try {
-      await api('');
+      await api(apiUrl);
       dispatch(receiveHealthStatus('online'));
     } catch(e) {
       dispatch(receiveHealthStatus('offline'));
@@ -85,9 +99,11 @@ export const checkHealth = () => {
 
 export const addData = (data) => {
   return async (dispatch, state, api) => {
+    const { serverAvailable } = state().data;
+    const apiUrl = serverAvailable ? '' : 'fake';
     const id = uuidv4();
     try {
-      const response = await api('data', 'post', { ...data, isSynced: true, id });
+      const response = await api(apiUrl, 'post', { ...data, isSynced: true, id });
       await saveToDb(response.data);
       dispatch(addedData(response.data));
     } catch(e) {
@@ -96,6 +112,11 @@ export const addData = (data) => {
     }
   };
 };
+
+export const toggleServer = payload => ({
+  type: 'TOGGLE_SERVER',
+  payload,
+});
 
 export const addedData = payload => ({
   type: 'ADDED_DATA_ITEM',
